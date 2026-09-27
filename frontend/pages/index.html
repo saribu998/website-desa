@@ -1,0 +1,16 @@
+document.addEventListener('DOMContentLoaded', () => {
+  const yearNode = document.getElementById('year');
+  if (yearNode) {
+    yearNode.textContent = new Date().getFullYear();
+  }
+
+  const buttons = document.querySelectorAll('[data-scroll]');
+  buttons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const target = document.getElementById(button.dataset.scroll);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+});
