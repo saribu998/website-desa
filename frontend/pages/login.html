@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login | Desa Cempaka</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg-dark: #081b2a;
+        --bg-mid: #112d3f;
+        --bg-soft: #153f55;
+        --glass: rgba(255, 255, 255, 0.10);
+        --glass-border: rgba(255, 255, 255, 0.18);
+        --text: #edf8ff;
+        --text-soft: #b7d7e8;
+        --primary: #67e7c8;
+        --secondary: #7ec8ff;
+        --accent: #ffe79a;
+        --error: #ff7d7d;
+        --shadow: 0 25px 60px rgba(10, 20, 30, 0.38);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Inter", sans-serif;
+        background:
+          radial-gradient(circle at top left, rgba(103, 231, 200, 0.16), transparent 30%),
+          radial-gradient(circle at bottom right, rgba(126, 200, 255, 0.15), transparent 35%),
+          linear-gradient(135deg, var(--bg-dark), var(--bg-mid) 50%, var(--bg-soft));
+        color: var(--text);
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+      }
+
+      .login-wrapper {
+        width: min(420px, calc(100% - 32px));
+      }
+
+      .login-card {
+        background: var(--glass);
+        border: 1px solid var(--glass-border);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        box-shadow: var(--shadow);
+        border-radius: 28px;
+        padding: 2.5rem 2rem;
+      }
+
+      .login-header {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+
+      .brand-mark {
+        width: 56px;
+        height: 56px;
+        margin: 0 auto 1rem;
+        display: grid;
+        place-items: center;
+        border-radius: 16px;
+        background: linear-gradient(135deg, rgba(103, 231, 200, 0.75), rgba(126, 200, 255, 0.75));
+        color: #072531;
+        font-size: 1.5rem;
+        font-weight: 800;
+      }
+
+      .login-header h1 {
+        margin: 0 0 0.5rem;
+        font-size: 1.8rem;
+      }
+
+      .login-header p {
+        color: var(--text-soft);
+        font-size: 0.95rem;
+        margin: 0;
+      }
+
+      .form-group {
+        margin-bottom: 1.2rem;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        font-size: 0.9rem;
+      }
+
+      input[type="email"],
+      input[type="password"],
+      select {
+        width: 100%;
+        padding: 0.85rem 1rem;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(255, 255, 255, 0.08);
+        color: var(--text);
+        font-size: 0.95rem;
+        transition: all 0.25s ease;
+      }
+
+      input[type="email"]:focus,
+      input[type="password"]:focus,
+      select:focus {
+        outline: none;
+        border-color: rgba(103, 231, 200, 0.5);
+        background: rgba(255, 255, 255, 0.12);
+        box-shadow: 0 0 0 3px rgba(103, 231, 200, 0.08);
+      }
+
+      select {
+        cursor: pointer;
+      }
+
+      .remember-forgot {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 0.85rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .remember-forgot input[type="checkbox"] {
+        margin-right: 0.4rem;
+        cursor: pointer;
+      }
+
+      .remember-forgot a {
+        color: var(--secondary);
+        text-decoration: none;
+      }
+
+      .remember-forgot a:hover {
+        text-decoration: underline;
+      }
+
+      .btn-login {
+        width: 100%;
+        padding: 0.95rem;
+        border: none;
+        border-radius: 12px;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        color: #062a35;
+        font-weight: 700;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.25s ease;
+      }
+
+      .btn-login:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 18px 30px rgba(103, 231, 200, 0.25);
+      }
+
+      .btn-login:active {
+        transform: translateY(0);
+      }
+
+      .signup-link {
+        text-align: center;
+        margin-top: 1.5rem;
+        color: var(--text-soft);
+        font-size: 0.9rem;
+      }
+
+      .signup-link a {
+        color: var(--secondary);
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .signup-link a:hover {
+        text-decoration: underline;
+      }
+
+      .alert {
+        padding: 1rem 1rem;
+        border-radius: 12px;
+        margin-bottom: 1.5rem;
+        font-size: 0.9rem;
+        display: none;
+      }
+
+      .alert.show {
+        display: block;
+      }
+
+      .alert.error {
+        background: rgba(255, 125, 125, 0.12);
+        border: 1px solid rgba(255, 125, 125, 0.25);
+        color: #ff9e9e;
+      }
+
+      .alert.success {
+        background: rgba(103, 231, 200, 0.12);
+        border: 1px solid rgba(103, 231, 200, 0.25);
+        color: #a8f3e0;
+      }
+
+      .role-tabs {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-bottom: 1.8rem;
+      }
+
+      .role-tab {
+        padding: 0.7rem;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 10px;
+        color: var(--text-soft);
+        font-weight: 600;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        text-align: center;
+      }
+
+      .role-tab.active {
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        border-color: transparent;
+        color: #062a35;
+      }
+
+      .role-tab:hover {
+        border-color: rgba(103, 231, 200, 0.3);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="login-wrapper">
+      <div class="login-card">
+        <div class="login-header">
+          <div class="brand-mark">D</div>
+          <h1>Desa Cempaka</h1>
+          <p>Portal Layanan Desa</p>
+        </div>
+
+        <div class="alert" id="alertMessage"></div>
+
+        <form id="loginForm" onsubmit="handleLogin(event)">
+          <div class="role-tabs">
+            <button type="button" class="role-tab active" data-role="warga" onclick="switchRole('warga')">👤 Warga</button>
+            <button type="button" class="role-tab" data-role="admin" onclick="switchRole('admin')">🔐 Admin</button>
+          </div>
+
+          <input type="hidden" id="userRole" value="warga" />
+
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="nama@email.com"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Masukkan password"
+              required
+            />
+          </div>
+
+          <div class="remember-forgot">
+            <label>
+              <input type="checkbox" name="remember" />
+              Ingat saya
+            </label>
+            <a href="#">Lupa password?</a>
+          </div>
+
+          <button type="submit" class="btn-login">Masuk</button>
+        </form>
+
+        <div class="signup-link">
+          Belum punya akun? <a href="#">Daftar di sini</a>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function switchRole(role) {
+        document.getElementById('userRole').value = role;
+        document.querySelectorAll('.role-tab').forEach(tab => {
+          tab.classList.remove('active');
+        });
+        document.querySelector(`[data-role="${role}"]`).classList.add('active');
+      }
+
+      function showAlert(message, type) {
+        const alertEl = document.getElementById('alertMessage');
+        alertEl.textContent = message;
+        alertEl.className = `alert show ${type}`;
+        setTimeout(() => alertEl.classList.remove('show'), 5000);
+      }
+
+      function handleLogin(e) {
+        e.preventDefault();
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const role = document.getElementById('userRole').value;
+
+        // Simulasi login
+        if (email && password) {
+          showAlert(`Login sebagai ${role} berhasil!`, 'success');
+          setTimeout(() => {
+            if (role === 'admin') {
+              window.location.href = './admin-dashboard.html';
+            } else {
+              window.location.href = './warga-dashboard.html';
+            }
+          }, 1500);
+        } else {
+          showAlert('Email dan password harus diisi', 'error');
+        }
+      }
+    </script>
+  </body>
+</html>

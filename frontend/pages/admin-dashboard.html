@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard | Desa Cempaka</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg-dark: #081b2a;
+        --bg-mid: #112d3f;
+        --bg-soft: #153f55;
+        --glass: rgba(255, 255, 255, 0.10);
+        --glass-border: rgba(255, 255, 255, 0.18);
+        --text: #edf8ff;
+        --text-soft: #b7d7e8;
+        --primary: #67e7c8;
+        --secondary: #7ec8ff;
+        --accent: #ffe79a;
+        --success: #67e7c8;
+        --warning: #ffa500;
+        --danger: #ff7d7d;
+        --shadow: 0 25px 60px rgba(10, 20, 30, 0.38);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Inter", sans-serif;
+        background: linear-gradient(135deg, var(--bg-dark), var(--bg-mid) 50%, var(--bg-soft));
+        color: var(--text);
+      }
+
+      .dashboard-wrapper {
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        min-height: 100vh;
+      }
+
+      .sidebar {
+        background: rgba(8, 27, 42, 0.6);
+        border-right: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 20px;
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        overflow-y: auto;
+      }
+
+      .sidebar-brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 2rem;
+        font-weight: 700;
+      }
+
+      .sidebar-brand-mark {
+        width: 40px;
+        height: 40px;
+        display: grid;
+        place-items: center;
+        border-radius: 10px;
+        background: linear-gradient(135deg, rgba(103, 231, 200, 0.75), rgba(126, 200, 255, 0.75));
+        color: #072531;
+        font-weight: 800;
+      }
+
+      .sidebar-menu {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .sidebar-menu li {
+        margin-bottom: 8px;
+      }
+
+      .sidebar-menu a {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 0.75rem 1rem;
+        border-radius: 10px;
+        color: var(--text-soft);
+        text-decoration: none;
+        transition: all 0.25s ease;
+      }
+
+      .sidebar-menu a:hover,
+      .sidebar-menu a.active {
+        background: rgba(103, 231, 200, 0.12);
+        color: var(--text);
+      }
+
+      .sidebar-menu a.active {
+        background: rgba(103, 231, 200, 0.2);
+        border-left: 3px solid var(--primary);
+        padding-left: calc(1rem - 3px);
+      }
+
+      .main-content {
+        padding: 20px;
+        overflow-y: auto;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 2rem;
+      }
+
+      .topbar-title h1 {
+        margin: 0;
+        font-size: 2rem;
+      }
+
+      .topbar-title p {
+        margin: 0;
+        color: var(--text-soft);
+        font-size: 0.9rem;
+      }
+
+      .topbar-actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .btn-icon {
+        width: 42px;
+        height: 42px;
+        display: grid;
+        place-items: center;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        color: var(--text);
+        cursor: pointer;
+        transition: all 0.25s ease;
+      }
+
+      .btn-icon:hover {
+        background: rgba(255, 255, 255, 0.12);
+      }
+
+      .grid-stats {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 16px;
+        margin-bottom: 2rem;
+      }
+
+      .stat-card {
+        background: var(--glass);
+        border: 1px solid var(--glass-border);
+        backdrop-filter: blur(18px);
+        border-radius: 18px;
+        padding: 1.5rem;
+      }
+
+      .stat-icon {
+        width: 48px;
+        height: 48px;
+        display: grid;
+        place-items: center;
+        border-radius: 12px;
+        margin-bottom: 1rem;
+        font-size: 1.5rem;
+      }
+
+      .stat-icon.primary {
+        background: rgba(103, 231, 200, 0.2);
+      }
+
+      .stat-icon.secondary {
+        background: rgba(126, 200, 255, 0.2);
+      }
+
+      .stat-icon.warning {
+        background: rgba(255, 165, 0, 0.2);
+      }
+
+      .stat-icon.danger {
+        background: rgba(255, 125, 125, 0.2);
+      }
+
+      .stat-value {
+        font-size: 1.6rem;
+        font-weight: 700;
+        margin-bottom: 0.3rem;
+      }
+
+      .stat-label {
+        color: var(--text-soft);
+        font-size: 0.85rem;
+      }
+
+      .grid-content {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 16px;
+      }
+
+      .content-card {
+        background: var(--glass);
+        border: 1px solid var(--glass-border);
+        backdrop-filter: blur(18px);
+        border-radius: 18px;
+        padding: 1.5rem;
+      }
+
+      .content-card h2 {
+        margin: 0 0 1.2rem;
+        font-size: 1.2rem;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.9rem;
+      }
+
+      table thead th {
+        text-align: left;
+        padding: 0.8rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+        color: var(--text-soft);
+        font-weight: 600;
+      }
+
+      table tbody td {
+        padding: 0.8rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      table tbody tr:hover {
+        background: rgba(103, 231, 200, 0.08);
+      }
+
+      .badge {
+        display: inline-block;
+        padding: 0.35rem 0.7rem;
+        border-radius: 999px;
+        font-size: 0.75rem;
+        font-weight: 600;
+      }
+
+      .badge.pending {
+        background: rgba(255, 165, 0, 0.2);
+        color: #ffa500;
+      }
+
+      .badge.approved {
+        background: rgba(103, 231, 200, 0.2);
+        color: #67e7c8;
+      }
+
+      .badge.rejected {
+        background: rgba(255, 125, 125, 0.2);
+        color: #ff7d7d;
+      }
+
+      .badge.completed {
+        background: rgba(103, 231, 200, 0.2);
+        color: #67e7c8;
+      }
+
+      .btn-action {
+        padding: 0.4rem 0.8rem;
+        border-radius: 6px;
+        border: none;
+        background: rgba(126, 200, 255, 0.2);
+        color: var(--secondary);
+        cursor: pointer;
+        font-size: 0.8rem;
+        font-weight: 600;
+        transition: all 0.25s ease;
+      }
+
+      .btn-action:hover {
+        background: rgba(126, 200, 255, 0.3);
+      }
+
+      .activity-item {
+        padding: 1rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        display: flex;
+        gap: 12px;
+      }
+
+      .activity-icon {
+        width: 40px;
+        height: 40px;
+        display: grid;
+        place-items: center;
+        border-radius: 10px;
+        background: rgba(103, 231, 200, 0.2);
+        flex-shrink: 0;
+      }
+
+      .activity-content p {
+        margin: 0.2rem 0;
+        font-size: 0.9rem;
+      }
+
+      .activity-content .time {
+        color: var(--text-soft);
+        font-size: 0.8rem;
+      }
+
+      @media (max-width: 1024px) {
+        .grid-content {
+          grid-template-columns: 1fr;
+        }
+
+        .grid-stats {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 768px) {
+        .dashboard-wrapper {
+          grid-template-columns: 1fr;
+        }
+
+        .sidebar {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="dashboard-wrapper">
+      <aside class="sidebar">
+        <div class="sidebar-brand">
+          <div class="sidebar-brand-mark">D</div>
+          <span>Admin</span>
+        </div>
+
+        <ul class="sidebar-menu">
+          <li><a href="#" class="active">📊 Dashboard</a></li>
+          <li><a href="#">👥 Data Penduduk</a></li>
+          <li><a href="#">📄 Verifikasi Surat</a></li>
+          <li><a href="#">👨‍👩‍👧‍👦 Kelola KK</a></li>
+          <li><a href="#">📝 Berita Desa</a></li>
+          <li><a href="#">🖼️ Galeri</a></li>
+          <li><a href="#">📋 Laporan</a></li>
+          <li><a href="#">⚙️ Pengaturan</a></li>
+          <li><a href="./login.html">🚪 Logout</a></li>
+        </ul>
+      </aside>
+
+      <main class="main-content">
+        <div class="topbar">
+          <div class="topbar-title">
+            <h1>Dashboard</h1>
+            <p>Selamat datang kembali, Admin Desa Cempaka</p>
+          </div>
+          <div class="topbar-actions">
+            <button class="btn-icon">🔔</button>
+            <button class="btn-icon">👤</button>
+          </div>
+        </div>
+
+        <div class="grid-stats">
+          <div class="stat-card">
+            <div class="stat-icon primary">👥</div>
+            <div class="stat-value">2,480</div>
+            <div class="stat-label">Total Penduduk</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon secondary">📄</div>
+            <div class="stat-value">45</div>
+            <div class="stat-label">Surat Menunggu</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon warning">✅</div>
+            <div class="stat-value">186</div>
+            <div class="stat-label">Surat Disetujui</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon danger">❌</div>
+            <div class="stat-value">12</div>
+            <div class="stat-label">Surat Ditolak</div>
+          </div>
+        </div>
+
+        <div class="grid-content">
+          <div class="content-card">
+            <h2>📋 Pengajuan Surat Terbaru</h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>Nomor</th>
+                  <th>Nama</th>
+                  <th>Jenis Surat</th>
+                  <th>Tanggal</th>
+                  <th>Status</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>#001</td>
+                  <td>Budi Santoso</td>
+                  <td>Surat Domisili</td>
+                  <td>27 Ags 2026</td>
+                  <td><span class="badge pending">Pending</span></td>
+                  <td><button class="btn-action">Review</button></td>
+                </tr>
+                <tr>
+                  <td>#002</td>
+                  <td>Siti Nurbaya</td>
+                  <td>Surat Usaha</td>
+                  <td>26 Ags 2026</td>
+                  <td><span class="badge approved">Approved</span></td>
+                  <td><button class="btn-action">Cetak</button></td>
+                </tr>
+                <tr>
+                  <td>#003</td>
+                  <td>Joko Widodo</td>
+                  <td>Pengantar KTP</td>
+                  <td>25 Ags 2026</td>
+                  <td><span class="badge approved">Approved</span></td>
+                  <td><button class="btn-action">Cetak</button></td>
+                </tr>
+                <tr>
+                  <td>#004</td>
+                  <td>Ratih Sulistyo</td>
+                  <td>Surat Domisili</td>
+                  <td>24 Ags 2026</td>
+                  <td><span class="badge rejected">Rejected</span></td>
+                  <td><button class="btn-action">Lihat</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="content-card">
+            <h2>📊 Aktivitas Terbaru</h2>
+            <div class="activity-item">
+              <div class="activity-icon">📝</div>
+              <div class="activity-content">
+                <p>Pengajuan surat baru dari Budi Santoso</p>
+                <p class="time">5 menit yang lalu</p>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-icon">✅</div>
+              <div class="activity-content">
+                <p>Surat Siti Nurbaya telah disetujui</p>
+                <p class="time">20 menit yang lalu</p>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-icon">📄</div>
+              <div class="activity-content">
+                <p>Laporan bulanan diunggah</p>
+                <p class="time">1 jam yang lalu</p>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-icon">👥</div>
+              <div class="activity-content">
+                <p>Data penduduk baru ditambahkan</p>
+                <p class="time">2 jam yang lalu</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
